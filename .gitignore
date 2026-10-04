@@ -33,21 +33,18 @@ wheels/
 *.egg
 
 # ===============================
-# Arquivos de PDF de Entrada
-# (Evita subir livros/artigos pesados ou protegidos por copyright)
+# Bloquear TODOS os arquivos PDF
 # ===============================
 *.pdf
-entrada/*.pdf
-!entrada/.gitkeep
+**/*.pdf
 
 # ===============================
-# Pastas e Arquivos de Saída Markdown
+# Bloquear TODOS os arquivos Markdown (.md), EXCETO README.md
 # ===============================
-*_paginas_*_a_*.md
-saida/*
-!saida/.gitkeep
-output/*
-!output/.gitkeep
+*.md
+**/*.md
+!README.md
+!**/README.md
 
 # ===============================
 # Caches de Modelos de IA

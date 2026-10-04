@@ -152,49 +152,50 @@ pip install -r requirements-cpu.txt
 
 ### Uso Básico
 
-Basta colocar o arquivo PDF desejado na pasta `entrada/` (ou na raiz) e executar:
+Para iniciar a extração, basta informar o caminho ou nome do arquivo PDF pelo terminal:
 
 ```bash
 # Com a venv ativada:
-python extrator_lotes.py
+python extrator_lotes.py meu_documento.pdf
 ```
-O script detecta o PDF automaticamente, calcula o total de páginas e inicia a extração em lotes de 100 páginas.
+
+> ⚠️ **Validação Imediata:**  
+> O script exige o caminho do arquivo PDF. Se o arquivo não for informado ou se **não for encontrado no diretório**, um erro explicativo é retornado imediatamente no terminal, interrompendo a execução de forma rápida e segura.
 
 ---
 
 ### Exemplos Práticos
 
-#### 1. Processando um arquivo específico
+#### 1. Processando um arquivo no diretório atual
 ```bash
-python extrator_lotes.py caminho/para/meu_livro.pdf
+python extrator_lotes.py artigo.pdf
 ```
 
-#### 2. Ajustando o tamanho do lote para máquinas com menos memória RAM (ex: 50 páginas)
+#### 2. Processando com caminho relativo ou subpasta
+```bash
+python extrator_lotes.py documentos/livro_completo.pdf
+```
+
+#### 3. Ajustando o tamanho do lote para máquinas com menos memória RAM (ex: 50 páginas)
 ```bash
 python extrator_lotes.py meu_artigo.pdf --lote 50
 ```
 
-#### 3. Forçando execução em CPU e controlando número de núcleos/threads
+#### 4. Forçando execução estrita em CPU e controlando número de núcleos/threads
 ```bash
 python extrator_lotes.py livro_denso.pdf --cpu --threads 4
-```
-
-#### 4. Definindo uma pasta personalizada para os Markdowns gerados
-```bash
-python extrator_lotes.py tese.pdf --saida meus_markdowns/
 ```
 
 ---
 
 ### Opções e Parâmetros da CLI
 
-| Argumento / Flag | Descrição | Padrão |
-| :--- | :--- | :--- |
-| `pdf` | Caminho do arquivo PDF a processar *(opcional se houver PDF em `entrada/`)* | `None` (auto-busca) |
-| `-l`, `--lote` | Quantidade de páginas processadas por lote/arquivo `.md` | `100` |
-| `-s`, `--saida` | Diretório de destino dos arquivos Markdown gerados | `saida/<nome_pdf>/` |
-| `--cpu` | Força estritamente a execução em CPU | `False` (Auto) |
-| `-t`, `--threads` | Define o número de threads paralelas utilizadas pela CPU | `None` (Auto) |
+| Argumento / Flag | Descrição | Obrigatório? | Padrão |
+| :--- | :--- | :--- | :--- |
+| `pdf` | Caminho do arquivo PDF a ser processado | **Sim** | — |
+| `-l`, `--lote` | Quantidade de páginas processadas por lote/arquivo `.md` | Não | `100` |
+| `--cpu` | Força estritamente a execução em CPU | Não | `False` (Auto) |
+| `-t`, `--threads` | Define o número de threads paralelas utilizadas pela CPU | Não | `None` (Auto) |
 
 Para ver o menu de ajuda completo a qualquer momento:
 ```bash
