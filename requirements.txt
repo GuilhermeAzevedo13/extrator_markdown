@@ -1,0 +1,5 @@
+# Dependências do Extrator Markdown por Lotes
+# Compatível com Linux e Windows 11 (Python 3.10+)
+
+docling>=2.0.0
+PyMuPDF>=1.23.0
