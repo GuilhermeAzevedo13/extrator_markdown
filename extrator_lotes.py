@@ -64,6 +64,7 @@ def criar_conversor(forcar_cpu: bool = False, num_threads: int | None = None):
     except Exception as e:
         if forcar_cpu or num_threads:
             print(f"[i] Aviso ao configurar acelerador ({e}). Utilizando inicialização padrão...")
+        # pyrefly: ignore [missing-import]
         from docling.document_converter import DocumentConverter
         return DocumentConverter()
 
