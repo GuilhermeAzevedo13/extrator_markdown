@@ -1,9 +1,0 @@
-# Instalação otimizada para execução em CPU (Linux e Windows 11)
-# Utiliza a roda do PyTorch compilada apenas para CPU (~200MB ao invés de ~2.8GB com CUDA)
-
---extra-index-url https://download.pytorch.org/whl/cpu
-
-torch>=2.2.0
-torchvision>=0.17.0
-docling>=2.0.0
-PyMuPDF>=1.23.0

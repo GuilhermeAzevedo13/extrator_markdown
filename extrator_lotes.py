@@ -16,6 +16,7 @@ try:
     import pymupdf as fitz
 except ImportError:
     try:
+        # pyrefly: ignore [missing-import]
         import fitz
     except ImportError:
         fitz = None
@@ -120,7 +121,7 @@ def main():
 
     if DocumentConverter is None:
         print("\n[!] O pacote 'docling' não está instalado no ambiente virtual.")
-        print("    Instale executando: pip install -r requirements-cpu.txt\n")
+        print("    Instale executando: pip install -r requirements.txt\n")
         sys.exit(1)
 
     # 4. Configuração das pastas de saída

@@ -68,7 +68,7 @@ Com o processamento em fatias (`page_range`):
 
 ## 🚀 Instalação Passo a Passo
 
-O PyTorch convencional baixa dependências pesadas de aceleração NVIDIA CUDA (~2.8 GB). Para rodar com eficiência em **CPU**, criamos uma instalação limpa que baixa apenas as rodas de CPU (~200 MB), economizando gigabytes de armazenamento e tempo de download.
+O processo de instalação é direto. Ao instalar as dependências do projeto (`docling` e `PyMuPDF`), o próprio instalador já baixa o PyTorch e todas as bibliotecas necessárias de forma automática.
 
 ### Opção A: Linux (Ubuntu/Debian/Fedora/Arch)
 
@@ -81,7 +81,7 @@ sudo apt update
 sudo apt install -y python3-venv python3-pip
 ```
 
-#### 2. Clone ou acerte o diretório do repositório
+#### 2. Navegue até o diretório do repositório
 
 ```bash
 cd /caminho/para/extrator_markdown
@@ -102,12 +102,10 @@ source venv/bin/activate
 pip install --upgrade pip
 ```
 
-#### 5. Instale as dependências otimizadas para CPU
-
-Utilize o arquivo `requirements-cpu.txt` que já inclui o repositório oficial CPU do PyTorch:
+#### 5. Instale as dependências
 
 ```bash
-pip install -r requirements-cpu.txt
+pip install -r requirements.txt
 ```
 
 ---
@@ -159,10 +157,10 @@ venv\Scripts\activate.bat
 python -m pip install --upgrade pip
 ```
 
-#### 6. Instale as dependências otimizadas para CPU
+#### 6. Instale as dependências
 
 ```powershell
-pip install -r requirements-cpu.txt
+pip install -r requirements.txt
 ```
 
 ---
@@ -265,8 +263,7 @@ extrator_markdown/
 ├── saida/                       # Onde os arquivos .md serão gerados (ignorado pelo git)
 │   └── .gitkeep
 ├── extrator_lotes.py            # Script principal com CLI e resolução automática
-├── requirements.txt             # Dependências padrão
-├── requirements-cpu.txt         # Dependências otimizadas para CPU (PyTorch leve)
+├── requirements.txt             # Dependências do projeto (docling e PyMuPDF)
 ├── .gitignore                   # Exclusões de ambiente, cache e PDFs pesados
 └── README.md                    # Documentação completa do projeto
 ```
@@ -277,12 +274,12 @@ extrator_markdown/
 
 ### 1. `RuntimeError: operator torchvision::nms does not exist`
 
-- **Causa:** Ocorre quando foram misturadas versões do `torch` e `torchvision` com e sem suporte a CUDA.
-- **Solução:** Remova as versões antigas e reinstale do repositório CPU:
+- **Causa:** Ocorre quando foram misturadas versões incompatíveis de bibliotecas no ambiente.
+- **Solução:** Reinstale as dependências de forma limpa:
 
   ```bash
-  pip uninstall torch torchvision torchaudio -y
-  pip install -r requirements-cpu.txt
+  pip uninstall torch torchvision torchaudio docling -y
+  pip install -r requirements.txt
   ```
 
 ### 2. No Windows: `File ... Activate.ps1 cannot be loaded because running scripts is disabled`
