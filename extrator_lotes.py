@@ -12,6 +12,7 @@ import argparse
 
 # Tentativa de importação com mensagens educativas (usa pymupdf preferencialmente)
 try:
+    # pyrefly: ignore [missing-import]
     import pymupdf as fitz
 except ImportError:
     try:
@@ -20,6 +21,7 @@ except ImportError:
         fitz = None
 
 try:
+    # pyrefly: ignore [missing-import]
     from docling.document_converter import DocumentConverter
 except ImportError:
     DocumentConverter = None
@@ -31,9 +33,13 @@ def criar_conversor(forcar_cpu: bool = False, num_threads: int | None = None):
     Fallback automático para inicialização padrão caso haja variação de versão do Docling.
     """
     try:
+        # pyrefly: ignore [missing-import]
         from docling.document_converter import DocumentConverter, PdfFormatOption
+        # pyrefly: ignore [missing-import]
         from docling.datamodel.base_models import InputFormat
+        # pyrefly: ignore [missing-import]
         from docling.datamodel.pipeline_options import PdfPipelineOptions
+        # pyrefly: ignore [missing-import]
         from docling.datamodel.accelerator_options import AcceleratorDevice, AcceleratorOptions
 
         pipeline_options = PdfPipelineOptions()
@@ -53,6 +59,7 @@ def criar_conversor(forcar_cpu: bool = False, num_threads: int | None = None):
     except Exception as e:
         if forcar_cpu or num_threads:
             print(f"[i] Aviso ao configurar acelerador ({e}). Utilizando inicialização padrão...")
+        # pyrefly: ignore [missing-import]
         from docling.document_converter import DocumentConverter
         return DocumentConverter()
 
