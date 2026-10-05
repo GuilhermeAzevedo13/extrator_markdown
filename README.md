@@ -177,34 +177,40 @@ python extrator_lotes.py meu_documento.pdf
 ```
 
 > ⚠️ **Validação Imediata:**  
-> O script exige o caminho do arquivo PDF. Se o arquivo não for informado ou se **não for encontrado no diretório**, um erro explicativo é retornado imediatamente no terminal, interrompendo a execução de forma rápida e segura.
+> O script verifica o arquivo PDF informado. Se o arquivo não for encontrado no diretório ou pasta `entrada/`, um erro explicativo é retornado imediatamente no terminal.
 
 ---
 
 ### Exemplos Práticos
 
-#### 1. Processando um arquivo no diretório atual
+#### 1. Processando um arquivo específico
 
 ```bash
-python extrator_lotes.py artigo.pdf
+python extrator_lotes.py entrada/meu_livro.pdf
 ```
 
-#### 2. Processando com caminho relativo ou subpasta
+*(Gera os arquivos organizados dentro de `saida/meu_livro/`)*
+
+#### 2. Processando TODOS os PDFs da pasta `entrada/` em fila (Sequencial)
+
+Se você colocar vários livros ou artigos na pasta `entrada/` e quiser converter todos automaticamente, um após o outro:
 
 ```bash
-python extrator_lotes.py documentos/livro_completo.pdf
+python extrator_lotes.py --todos
 ```
+
+*(O modelo de IA é carregado apenas uma vez e processa cada documento gerando uma pasta individual para cada um em `saida/`)*
 
 #### 3. Ajustando o tamanho do lote para máquinas com menos memória RAM (ex: 50 páginas)
 
 ```bash
-python extrator_lotes.py meu_artigo.pdf --lote 50
+python extrator_lotes.py entrada/meu_artigo.pdf --lote 50
 ```
 
 #### 4. Forçando execução estrita em CPU e controlando número de núcleos/threads
 
 ```bash
-python extrator_lotes.py livro_denso.pdf --cpu --threads 4
+python extrator_lotes.py --todos --cpu --threads 4
 ```
 
 ---
@@ -213,7 +219,8 @@ python extrator_lotes.py livro_denso.pdf --cpu --threads 4
 
 | Argumento / Flag | Descrição | Obrigatório? | Padrão |
 | :--- | :--- | :--- | :--- |
-| `pdf` | Caminho do arquivo PDF a ser processado | **Sim** | — |
+| `pdf` | Caminho do arquivo PDF a ser processado | Opcional se usar `--todos` ou houver 1 PDF em `entrada/` | — |
+| `-a`, `--todos` | Processa **todos** os PDFs da pasta `entrada/` sequencialmente | Não | `False` |
 | `-l`, `--lote` | Quantidade de páginas processadas por lote/arquivo `.md` | Não | `100` |
 | `--cpu` | Força estritamente a execução em CPU | Não | `False` (Auto) |
 | `-t`, `--threads` | Define o número de threads paralelas utilizadas pela CPU | Não | `None` (Auto) |
