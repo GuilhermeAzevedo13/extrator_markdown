@@ -1,12 +1,12 @@
 # 📚 Extrator de Markdown em Lotes para PDFs
 
-> **Transforme livros, apostilas, artigos científicos e relatórios em PDF em arquivos Markdown (`.md`) formatados e estruturados com Inteligência Artificial, rodando diretamente no seu processador (CPU) no Windows 11 ou Linux.**
+> **Transforme livros, apostilas, artigos científicos e relatórios em PDF em arquivos Markdown (`.md`) formatados e estruturados com Inteligência Artificial, com aceleração por GPU (NVIDIA CUDA) ou CPU no Windows 11 e Linux.**
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![Motor IA](https://img.shields.io/badge/Motor_IA-Docling-orange.svg)](https://github.com/docling-project/docling)
 [![Leitor PDF](https://img.shields.io/badge/Leitor_PDF-PyMuPDF-green.svg)](https://github.com/pymupdf/PyMuPDF)
 [![Sistemas](https://img.shields.io/badge/Sistemas-Windows%2011%20%7C%20Linux-lightgrey.svg)]()
-[![Hardware](https://img.shields.io/badge/Hardware-Otimizado_para_CPU-blueviolet.svg)]()
+[![Hardware](https://img.shields.io/badge/Hardware-GPU_(CUDA)_%7C_CPU-blueviolet.svg)]()
 [![Licença](https://img.shields.io/badge/Licen%C3%A7a-MIT-yellow.svg)](LICENSE)
 
 ---
@@ -203,10 +203,22 @@ source venv/bin/activate
 ---
 
 ### Passo 5: Instalar as dependências
+
+Se você possui placa de vídeo **NVIDIA (GeForce RTX/GTX)** e quer acelerar a conversão com **GPU (CUDA)**:
+```bash
+pip install --upgrade pip
+# 1. Instala o PyTorch compilado com suporte a CUDA
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
+# 2. Instala o extrator e as demais bibliotecas
+pip install -r requirements.txt
+```
+
+Caso queira usar apenas **CPU** (sem placa dedicada):
 ```bash
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
+
 *(Aguarde o download e configuração automática de todos os pacotes).*
 
 **Pronto! A instalação no Linux está 100% concluída.**
@@ -291,7 +303,8 @@ Você pode combinar as opções conforme a sua necessidade:
 | `pdf` | Nome ou caminho do PDF que você quer extrair | `python extrator_lotes.py "entrada/livro.pdf"` |
 | `-a`, `--todos` | Converte **todos** os PDFs da pasta `entrada/` em fila | `python extrator_lotes.py --todos` |
 | `-l`, `--lote <N>` | Altera a quantidade de páginas por arquivo (padrão: 100) | `python extrator_lotes.py --lote 50` |
-| `--cpu` | Garante que o processamento utilize apenas a CPU | `python extrator_lotes.py --cpu` |
+| `--gpu` | Prioriza e valida a execução acelerada por GPU (CUDA) | `python extrator_lotes.py --gpu` |
+| `--cpu` | Força a execução exclusivamente em CPU | `python extrator_lotes.py --cpu` |
 | `-t`, `--threads <N>` | Define quantas threads/núcleos o processador usará | `python extrator_lotes.py --threads 4` |
 | `-h`, `--help` | Mostra o menu de ajuda com todas as opções na tela | `python extrator_lotes.py --help` |
 

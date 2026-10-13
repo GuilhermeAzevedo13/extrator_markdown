@@ -32,11 +32,33 @@ except ImportError:
     DocumentConverter = None
 
 
-def criar_conversor(forcar_cpu: bool = False, num_threads: int | None = None):
+def criar_conversor(forcar_cpu: bool = False, forcar_gpu: bool = False, num_threads: int | None = None):
     """
-    Inicializa o DocumentConverter configurando opções de aceleração (CPU / Threads).
+    Inicializa o DocumentConverter configurando opções de aceleração (CPU / GPU / Threads).
     Fallback automático para inicialização padrão caso haja variação de versão do Docling.
     """
+    gpu_disponivel = False
+    nome_gpu = None
+    try:
+        # pyrefly: ignore [missing-import]
+        import torch
+        if torch.cuda.is_available():
+            gpu_disponivel = True
+            nome_gpu = torch.cuda.get_device_name(0)
+    except Exception:
+        pass
+
+    if forcar_cpu:
+        print("[⚙️] Modo forçado: Executando exclusivamente em CPU (--cpu).")
+    elif gpu_disponivel:
+        print(f"[🚀] Aceleração por GPU ativada: {nome_gpu}")
+    elif forcar_gpu:
+        print("[!] Aviso: '--gpu' foi solicitada, mas nenhuma GPU CUDA foi encontrada pelo PyTorch.")
+        print("    Para ativar sua GPU NVIDIA, instale o PyTorch com suporte a CUDA:")
+        print("    pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124\n")
+    else:
+        print("[ℹ️] Nenhuma GPU CUDA detectada pelo PyTorch. Executando em CPU.")
+
     try:
         # pyrefly: ignore [missing-import]
         from docling.document_converter import DocumentConverter, PdfFormatOption
@@ -49,7 +71,13 @@ def criar_conversor(forcar_cpu: bool = False, num_threads: int | None = None):
 
         pipeline_options = PdfPipelineOptions()
 
-        dispositivo = AcceleratorDevice.CPU if forcar_cpu else AcceleratorDevice.AUTO
+        if forcar_cpu:
+            dispositivo = AcceleratorDevice.CPU
+        elif gpu_disponivel or forcar_gpu:
+            dispositivo = AcceleratorDevice.CUDA
+        else:
+            dispositivo = AcceleratorDevice.AUTO
+
         acc_kwargs = {"device": dispositivo}
         if num_threads and num_threads > 0:
             acc_kwargs["num_threads"] = num_threads
@@ -62,7 +90,7 @@ def criar_conversor(forcar_cpu: bool = False, num_threads: int | None = None):
             }
         )
     except Exception as e:
-        if forcar_cpu or num_threads:
+        if forcar_cpu or forcar_gpu or num_threads:
             print(f"[i] Aviso ao configurar acelerador ({e}). Utilizando inicialização padrão...")
         # pyrefly: ignore [missing-import]
         from docling.document_converter import DocumentConverter
@@ -172,6 +200,11 @@ def main():
         help="Força a execução exclusivamente em CPU"
     )
     parser.add_argument(
+        "--gpu",
+        action="store_true",
+        help="Prioriza ou valida a execução com aceleração em GPU (CUDA)"
+    )
+    parser.add_argument(
         "--threads",
         "-t",
         type=int,
@@ -253,7 +286,7 @@ def main():
 
     # Inicializa o modelo Docling uma única vez para todos os documentos
     print("\nIniciando o modelo de IA (Docling)...")
-    converter = criar_conversor(forcar_cpu=args.cpu, num_threads=args.threads)
+    converter = criar_conversor(forcar_cpu=args.cpu, forcar_gpu=args.gpu, num_threads=args.threads)
 
     tamanho_lote = max(1, args.lote)
     tempo_inicio_geral = time.time()
